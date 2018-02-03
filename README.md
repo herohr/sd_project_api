@@ -30,7 +30,7 @@
 | 400  | 某项输入太长 | {<br />"reason": "...",<br />"tags": ["username", ...]} |
 | 409  | 用户名已存在 | {<br />"reason":"..."}                   |
 
-### 登陆、鉴权GET /user/login
+### 登陆、鉴权POST /user/login
 
 **POST表单**
 
@@ -109,7 +109,7 @@
 
 ### 获取上传图片的地址 POST /imags
 
-#### POST表单
+#### POST表单 /imags
 
 服务端响应的"form_item"为给阿里云上传文件必须的表单项，一定要都填写，然后再在后面加上上传的文件。
 
@@ -126,11 +126,11 @@
 | 403  | 未指定img_format | {"reason": "img_format is required"}     |
 | 403  | 格式不符          | {"[fmt] is not allowed"}                 |
 
-#### GET表单
 
 
 
-#### PUT表单
+
+#### PUT表单 /imags
 
 在POST之后并且上传给阿里云，阿里云返回状态码之后，客户端一定要将阿里云返回的状态码和刚刚上传的图片image_id发送给服务端，服务端以此标记阿里云上OSS的资源被上传成功。
 
@@ -150,7 +150,7 @@
 | 400  | 未给出image_id            | {"reason": "form_id is required"}        |
 | 404  | image_id不正确            | {"reason": "Image id: [id] not found"}   |
 
-#### GET表单
+#### GET表单 /imags
 
 GET方法用户获取阿里云上的图片，可以由image_id、user_id、image_id_list获取图片的URL，其中user_id和image_id_list返回的都是一个[{"signed_url": …, "image_id": …}, …]数组，当用image_id_list查询时，返回的数组序和客户端提交的image_id_list序对应，当有image_id不存在的时候，该位置为null。
 
@@ -167,7 +167,7 @@ GET方法用户获取阿里云上的图片，可以由image_id、user_id、image
 | 响应码  | 解释                | json内容                                   |
 | ---- | ----------------- | ---------------------------------------- |
 | 200  | 获取成功              | {"signed_url": "http://......", "expire_time": } |
-| 200  | 获取成功              | {"image_url_list":[{{"signed_url": "http://......", "expires": 6000, "params":None, "headers":None}}] |
+| 200  | 获取成功              | {"image_url_list":[{{"signed_url": "http://......", "expires": 6000, "params":null, "headers":null}}] |
 | 404  | image_id对应的图片不存在  | {"reason": "image_id not found"}         |
 | 403  | 没有权限访问该user_id    | {"reason": "You have no access to get the images"} |
 | 400  | image_id_list解析错误 | {"reason": "The param image_id_list is illegal"} |
